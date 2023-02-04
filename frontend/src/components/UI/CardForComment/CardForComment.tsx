@@ -1,6 +1,5 @@
 import React from 'react';
 import { Box, Button, Typography } from '@mui/material';
-import { deleteOneNews, fetchAllNews } from '../../../features/news/newsThunks';
 import { deleteComment, fetchComments } from '../../../features/comments/commentsThunks';
 import { useAppDispatch } from '../../../app/hooks';
 

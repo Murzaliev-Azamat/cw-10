@@ -1,8 +1,7 @@
 import express from 'express';
-import {OneComment, OneCommentWithoutId, OneNewsWithoutId} from "../types";
+import {OneComment, OneCommentWithoutId} from "../types";
 import mysqlDb from "../mysqlDB";
 import {OkPacket} from "mysql2";
-import {imagesUpload} from "../multer";
 
 const newsRouter = express.Router();
 
