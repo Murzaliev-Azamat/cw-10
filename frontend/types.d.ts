@@ -1,12 +1,12 @@
-export interface Post {
-  id: string;
-  author: string;
-  message: string;
+export interface OneNews {
+  id: number;
+  title: string;
+  info: string;
   image: string | null;
 }
 
-export interface PostApi {
-  author: string;
-  message: string;
+export interface OneNewsApi {
+  title: string;
+  info: string;
   image: File | null;
 }

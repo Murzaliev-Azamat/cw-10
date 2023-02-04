@@ -1,10 +1,11 @@
-export interface Category {
+export interface OneNews {
   id: number;
-  name: string;
-  description: string;
+  title: string;
+  info: string;
+  image: string | null;
 }
 
-export type CategoryWithoutId = Omit<Category, 'id'>;
+export type OneNewsWithoutId = Omit<OneNews, 'id'>;
 
 export interface Place {
   id: number;

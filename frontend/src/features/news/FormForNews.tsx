@@ -1,28 +1,31 @@
 import React, { useState } from 'react';
 import { Button, Grid, TextField } from '@mui/material';
 import { useAppDispatch } from '../../app/hooks';
-import { addPost, fetchPosts } from './postsThunks';
+import { addOneNews, fetchAllNews } from './newsThunks';
 import FileInput from '../../components/UI/FileInput/FileInput';
-import { PostApi } from '../../../types';
+import { OneNewsApi } from '../../../types';
+import { useNavigate } from 'react-router-dom';
 
-const FormForPosts = () => {
+const FormForNews = () => {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const [state, setState] = useState<PostApi>({
-    author: '',
-    message: '',
+  const [state, setState] = useState<OneNewsApi>({
+    title: '',
+    info: '',
     image: null,
   });
 
   const submitFormHandler = async (e: React.FormEvent) => {
     e.preventDefault();
-    await dispatch(addPost({
-      author: state.author,
-      message: state.message,
+    await dispatch(addOneNews({
+      title: state.title,
+      info: state.info,
       image: state.image,
     }));
-    setState({author: '', message: '', image: null});
-    await dispatch(fetchPosts());
+    setState({title: '', info: '', image: null});
+    await dispatch(fetchAllNews());
+    navigate('/');
   };
 
   const inputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,10 +57,11 @@ const FormForPosts = () => {
       <Grid item container justifyContent="space-between" alignItems="center" xs sx={{mb: 1}}>
         <TextField
           sx={{width: '100%'}}
-          id="author" label="Author"
-          value={state.author}
+          id="title" label="Title"
+          value={state.title}
           onChange={inputChangeHandler}
-          name="author"
+          name="title"
+          required
         />
       </Grid>
 
@@ -66,10 +70,10 @@ const FormForPosts = () => {
           <TextField
             sx={{width: 1}}
             multiline rows={3}
-            id="message" label="Message"
-            value={state.message}
+            id="info" label="Info"
+            value={state.info}
             onChange={inputChangeHandler}
-            name="message"
+            name="info"
             required
           />
         </Grid>
@@ -84,11 +88,11 @@ const FormForPosts = () => {
       </Grid>
 
       <Button type="submit" color="primary" variant="contained">
-        Add post
+        Add news
       </Button>
     </form>
   );
 
 };
 
-export default FormForPosts;
+export default FormForNews;
