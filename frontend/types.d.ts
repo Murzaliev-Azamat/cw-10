@@ -10,3 +10,16 @@ export interface OneNewsApi {
   info: string;
   image: File | null;
 }
+
+export interface Comment {
+  id: number;
+  news_id: number;
+  author: string;
+  message: string;
+}
+
+export interface CommentApi {
+  news_id: number;
+  author: string;
+  message: string;
+}

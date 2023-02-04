@@ -7,28 +7,11 @@ export interface OneNews {
 
 export type OneNewsWithoutId = Omit<OneNews, 'id'>;
 
-export interface Place {
+export interface OneComment {
   id: number;
-  name: string;
-  description: string;
+  author: string;
+  message: string;
+  news_id: number;
 }
 
-export type PlaceWithoutId = Omit<Place, 'id'>;
-
-export interface Item {
-  id: number;
-  category_id: number;
-  place_id: number;
-  name: string;
-  description: string;
-  photo: string | null;
-}
-
-export type ItemWithoutId = Omit<Item, 'id'>;
-
-export interface existCategoryID {
-  category_id: number;
-}
-export interface existPlaceID {
-  place_id: number;
-}
+export type OneCommentWithoutId = Omit<OneComment, 'id'>;

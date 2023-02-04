@@ -1,5 +1,5 @@
 import express from 'express';
-import {existCategoryID, OneNews, OneNewsWithoutId} from "../types";
+import {OneNews, OneNewsWithoutId} from "../types";
 import mysqlDb from "../mysqlDB";
 import {OkPacket} from "mysql2";
 import {imagesUpload} from "../multer";
@@ -8,7 +8,7 @@ const newsRouter = express.Router();
 
 newsRouter.get('', async (req, res) => {
   const connection = mysqlDb.getConnection();
-  const result = await connection.query('SELECT id, title, image FROM news');
+  const result = await connection.query('SELECT * FROM news');
   const news = result[0] as OneNews[];
 
   res.send(news);
@@ -31,8 +31,12 @@ newsRouter.get('/:id', async (req, res) => {
 });
 
 newsRouter.post('',imagesUpload.single('image'), async (req, res) => {
-  if (!req.body.title || !req.body.info) {
-    return res.status(400).send({error: 'Поле сообщение отсутствует'});
+  if (!req.body.title) {
+    return res.status(400).send({error: 'Поле "title" отсутствует'});
+  }
+
+  if (!req.body.info) {
+    return res.status(400).send({error: 'Поле "info" отсутствует'});
   }
 
   const oneNewsData: OneNewsWithoutId = {
@@ -48,28 +52,33 @@ newsRouter.post('',imagesUpload.single('image'), async (req, res) => {
     [oneNewsData.title, oneNewsData.info, oneNewsData.image]
   );
 
-  const result = await connection.query(sql);
+  try {
+    const result = await connection.query(sql);
 
-  const info = result[0] as OkPacket;
+    const info = result[0] as OkPacket;
 
-  res.send({
-    ...oneNewsData,
-    id: info.insertId,
-  });
+    res.send({
+      ...oneNewsData,
+      id: info.insertId,
+    });
+  } catch (e) {
+    return res.status(500).send({error: 'Не удалось добавить новость'});
+  }
 });
 
 newsRouter.delete('/:id', async (req, res) => {
   const connection = mysqlDb.getConnection();
 
-  // const resultoneNewsIdsInItems = await connection.query('SELECT category_id FROM items');
-  // const oneNewsIdsInItems = resultoneNewsIdsInItems[0] as existCategoryID[];
-  // for (const oneNewsIdInItems of oneNewsIdsInItems) {
-  //   const everyID = oneNewsIdInItems.category_id;
-  //   if (everyID === Number(req.params.id)) {
-  //     res.send("Данную категорию нельзя удалить, так как она связана с ресурсом item");
-  //     return
-  //   }
-  // }
+  const result = await connection.query(
+      'SELECT * FROM news WHERE id = ?',
+      [req.params.id]
+  );
+  const news = result[0] as OneNews[];
+  const oneNews = news[0];
+
+  if (!oneNews) {
+    return res.status(404).send({error: 'Not Found'});
+  }
 
   await connection.query('DELETE FROM news WHERE id = ?', req.params.id);
 

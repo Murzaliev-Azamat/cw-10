@@ -4,6 +4,8 @@ import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { selectOneNews } from '../../../features/news/newsSlice';
 import { fetchOneNews } from '../../../features/news/newsThunks';
 import { useParams } from 'react-router-dom';
+import Comments from '../../../features/comments/Comments';
+import FormForComments from '../../../features/comments/FormForComments';
 
 
 const FullOneNews = () => {
@@ -28,6 +30,8 @@ const FullOneNews = () => {
       <Typography variant="subtitle1" color="text.secondary">
         {oneNews?.info}
       </Typography>
+      <Comments/>
+      <FormForComments/>
     </div>
   );
 };

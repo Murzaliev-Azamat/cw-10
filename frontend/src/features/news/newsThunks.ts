@@ -11,7 +11,7 @@ export const fetchAllNews = createAsyncThunk<OneNews[]>(
 );
 
 export const fetchOneNews = createAsyncThunk<OneNews, string>(
-  'home/fetchOne',
+  'news/fetchOne',
   async (id) => {
     const oneNewsResponse = await axiosApi.get<OneNews | null>('news/' + id);
     const oneNews = oneNewsResponse.data;
@@ -43,7 +43,7 @@ export const addOneNews = createAsyncThunk<void, OneNewsApi>(
 );
 
 export const deleteOneNews = createAsyncThunk<void, string>(
-  'home/deleteOne',
+  'news/deleteOne',
   async (id) => {
     await axiosApi.delete('/news/' + id);
   }
